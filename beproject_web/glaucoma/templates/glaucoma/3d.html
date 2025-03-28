@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glaucoma Diagnosis</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+
+    <!-- Importing Three.js for the 3D model -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+    
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #ffffff; /* White background for the page */
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        color:aliceblue;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background-color: rgba(255, 255, 255, 0); /* Fully transparent navbar */
+      }
+
+      .navbar .navbar-start, .navbar .navbar-center, .navbar .navbar-end {
+        padding: 0.5rem 1rem;
+      }
+
+      /* 3D Model Section */
+      #3d-model-container {
+        width: 100%;
+        height: 100vh; /* Full viewport height for 3D model */
+        margin-top: 0; /* Remove any extra margin */
+      }
+
+      /* Remove extra margins/padding from the body */
+      .content {
+        margin-top: 0; /* Ensure no space between navbar and content */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar Section -->
+    <header class="navbar shadow-2xl">
+      <div class="navbar-start">
+        <a class="btn btn-ghost normal-case text-xl font-bold">Glaucoma Diagnosis</a>
+      </div>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'signup' %}" class="text-primary">Signup</a></li>
+          <li><a href="{% url '3d' %}">3D</a></li>
+        </ul>
+      </div>
+      <div class="navbar-end">
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+      </div>
+    </header>
+
+    <!-- 3D Model Section -->
+    <div class="content">
+      <div id="3d-model-container">
+        <!-- Your 3D model will be loaded here -->
+        <script type="module" src="{% static 'glaucoma/js/main.js' %}"></script>
+      </div>
+    </div>
+
+    <!-- Auto Scroll to the Bottom (3D model) -->
+    <script>
+      window.onload = function() {
+        // Automatically scroll to the bottom of the page when loaded
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,301 @@
+{% load static %}  
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/"
+          }
+        }
+      </script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glaucoma Diagnosis</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+
+    <style>
+
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .gradient-bg {
+            background-image: linear-gradient(to right, #02599C, #00ABEB);
+        }
+
+        .eye-background {
+            background-image: url("{% static 'glaucoma/eye_illustration.jpeg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* .eye-foreground {
+            background-image: url("{% static 'glaucoma/eye_illustration.jpeg' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: blink 3s infinite;
+        } */
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-base-100">
+
+
+    <header class="shadow-2xl sticky top-0 z-50">
+    <div class="navbar container mx-auto">
+        <div class="navbar-start">
+            <a class="btn btn-ghost normal-case text-xl font-bold">EyeCare Pro</a> <!-- Change App Name -->
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                <li><a href="{% url '3d' %}">3D</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end space-x-2">
+            {% if user.is_authenticated %}
+                <span class="text-gray-700">👨‍⚕️ Dr. {{ user.username }}</span>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline btn-primary">Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn btn-error">Log Out</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-outline btn-primary">Sign Up</a>
+                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            {% endif %}
+        </div>
+    </div>
+    </header>
+
+    <section class="hero min-h-screen bg-cover bg-center" style="background-image: url('{% static 'glaucoma/eye_illustration.jpeg' %}')">
+        <div class="hero-overlay bg-opacity-50"></div>
+        <div class="hero-content text-center text-white">
+            <div class="max-w-md">
+                <h1 class="mb-5 text-5xl font-bold">Early Detection, Better Outcomes</h1>
+                <p class="mb-5">Protecting Your Vision with Advanced Glaucoma Diagnosis</p>
+                <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container mx-auto py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="flex justify-center items-center">
+                <div class="max-w-md">
+                    <h2 class="text-3xl font-bold mb-4">What is Glaucoma?</h2>
+                    <p>Glaucoma is a group of eye conditions that damage the optic nerve, the nerve that transmits images from the eye to the brain. This damage can lead to vision loss and, if left untreated, blindness.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="relative w-96 h-96">
+                    <img src="{% static 'glaucoma/eye_illustration.jpeg' %}" alt="Eye Illustration" class="rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-blue-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto py-16">
+        <h2 class="text-3xl font-bold text-center mb-8">Our Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                <figure><img src="{% static 'glaucoma/eye-exam.png' %}" alt="Eye Exam" /></figure>
+                <div class="card-body">
+                    <h2 class="card-title">Comprehensive Eye Exams</h2>
+                    <p>Our thorough eye exams are designed to detect glaucoma and other eye conditions before they lead to severe vision loss.</p>
+                </div>
+            </div>
+            <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                <figure><img src="{% static 'glaucoma/visual_field_test.jpeg' %}" alt="Visual Field Test" /></figure>
+                <div class="card-body">
+                    <h2 class="card-title">Visual Field Testing</h2>
+                    <p>We use advanced visual field testing to evaluate your peripheral vision and check for subtle early signs of glaucoma.</p>
+                </div>
+            </div>
+            <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                <figure><img src="{% static 'glaucoma/optic-nerve.png' %}" alt="Optic Nerve Evaluation" /></figure>
+                <div class="card-body">
+                    <h2 class="card-title">Optic Nerve & Retinal Evaluation</h2>
+                    <p>Our specialized imaging and examination techniques help us assess the health of your optic nerve and retina, crucial areas affected by glaucoma.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 gradient-bg text-white">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8">Why Choose Us?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex justify-center items-center">
+                    <div class="max-w-md">
+                        <ul class="list-disc list-inside">
+                            <li>Experienced Glaucoma Specialists</li>
+                            <li>State-of-the-Art Technology</li>
+                            <li>Personalized Treatment Plans</li>
+                            <li>Patient-Centered Care</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div class="relative w-96 h-96">
+                        <img src="{% static 'glaucoma/doctor-patient.png' %}" alt="Doctor and Patient" class="rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-blue-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container mx-auto py-16">
+        <h2 class="text-3xl font-bold text-center mb-8">Testimonials</h2>
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <p>"I was so grateful for the care and attention I received here. They took the time to explain everything to me in simple terms and helped me understand my diagnosis and treatment options. I would highly recommend this eye center to anyone concerned about glaucoma."</p>
+                            <div class="flex items-center">
+                                <div class="avatar">
+                                    <div class="w-12 rounded-full eye-background"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">John Smith</h3>
+                                    <p>Satisfied Patient</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <p>"The team here is truly amazing. They are not only highly skilled, but they also genuinely care about their patients. I'm so thankful for the expertise and support I received during my glaucoma treatment."</p>
+                            <div class="flex items-center">
+                                <div class="avatar">
+                                    <div class="w-12 rounded-full eye-background"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">Jane Doe</h3>
+                                    <p>Satisfied Patient</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="card card-compact w-96 bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <p>" I was starting to lose hope after going through so many different eye doctors. However, since I visited this clinic, my vision has been stabilized, and I can see quite well. I'm more than happy with their care and attention."</p>
+                            <div class="flex items-center">
+                                <div class="avatar">
+                                    <div class="w-12 rounded-full eye-background"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold">Mike Brown</h3>
+                                    <p>Satisfied Patient</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <div>
+            <p>Copyright © 2023 - All right reserved</p>
+        </div>
+    </footer>
+
+
+    <script>
+       var swiper = new Swiper(".swiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+        ScrollReveal().reveal('.hero-content', { delay: 500, origin: 'top' });
+        ScrollReveal().reveal('.grid', { delay: 500, origin: 'bottom' });
+        ScrollReveal().reveal('.swiper', { delay: 500, origin: 'bottom' });
+    </script>
+    <script>
+        gsap.from(".hero-content h1", {
+            duration: 1,
+            y: -50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.inOut",
+        });
+
+        gsap.from(".hero-content p", {
+            duration: 1,
+            y: 20,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.inOut",
+        });
+
+        gsap.from(".hero-content button", {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.inOut",
+        });
+
+
+        gsap.from(".grid div", {
+            duration: 1,
+            y: -50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.inOut",
+        });
+        gsap.from(".swiper-slide", {
+            duration: 1,
+            y: -50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.inOut",
+        });
+    </script>
+
+        <script type="module" src="{% static 'glaucoma/js/main.js' %}"></script>
+
+</body>
+</html>
