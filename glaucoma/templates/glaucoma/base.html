@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} 👁️EyeCare PRO{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px) saturate(180%);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal Background */
+        .modal-bg {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Smooth Transition */
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900">
+
+    <!-- ✅ Modern Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full bg-opacity-20 backdrop-blur-lg shadow-lg text-white p-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'glaucoma:index' %}"
+            class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+            EyeCare PRO
+        </a>
+
+        <!-- Navbar Links (Hidden on Small Screens) -->
+        <nav class="hidden lg:flex space-x-6">
+            <a href="{% url 'glaucoma:index' %}"
+                class="relative text-lg font-medium transition-all duration-300 hover:text-blue-400 after:block after:h-0.5 after:bg-blue-400 after:w-0 after:hover:w-full after:transition-all">Home</a>
+            <a href="{% url 'glaucoma:about' %}"
+                class="relative text-lg font-medium transition-all duration-300 hover:text-blue-400 after:block after:h-0.5 after:bg-blue-400 after:w-0 after:hover:w-full after:transition-all">About</a>
+            <a href="{% url 'glaucoma:contact' %}"
+                class="relative text-lg font-medium transition-all duration-300 hover:text-blue-400 after:block after:h-0.5 after:bg-blue-400 after:w-0 after:hover:w-full after:transition-all">Contact</a>
+            <a href="#" onclick="openSignupModal()"
+                class="relative text-lg font-medium transition-all duration-300 hover:text-blue-400 after:block after:h-0.5 after:bg-blue-400 after:w-0 after:hover:w-full after:transition-all">Signup</a>
+            <a href="{% url 'glaucoma:3d' %}"
+                class="relative text-lg font-medium transition-all duration-300 hover:text-blue-400 after:block after:h-0.5 after:bg-blue-400 after:w-0 after:hover:w-full after:transition-all">3D</a>
+        </nav>
+
+        <!-- ✅ Login / Logout Button -->
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'glaucoma:logout' %}">
+            {% csrf_token %}
+            <button type="submit"
+                class="hidden lg:block px-6 py-2 bg-red-500 hover:bg-red-600 rounded-full shadow-lg text-white font-semibold transition-all duration-300">
+                Logout
+            </button>
+        </form>
+        {% else %}
+        <button onclick="openModal()"
+            class="hidden lg:block px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-full shadow-lg text-white font-semibold transition-all duration-300">
+            Login
+        </button>
+        {% endif %}
+
+        <!-- Hamburger Menu (Visible on Small Screens) -->
+        <button id="mobileMenuBtn" class="lg:hidden focus:outline-none text-2xl">
+            ☰
+        </button>
+
+        <!-- Mobile Menu (Initially Hidden) -->
+        <nav id="mobileMenu"
+            class="hidden absolute top-16 left-0 w-full bg-gray-900 bg-opacity-90 backdrop-blur-lg text-center py-4 space-y-4">
+            <a href="{% url 'glaucoma:index' %}" class="block text-lg font-medium hover:text-blue-400">Home</a>
+            <a href="{% url 'glaucoma:about' %}" class="block text-lg font-medium hover:text-blue-400">About</a>
+            <a href="{% url 'glaucoma:contact' %}" class="block text-lg font-medium hover:text-blue-400">Contact</a>
+            <a href="#" onclick="openSignupModal()" class="block text-lg font-medium hover:text-blue-400">Signup</a>
+            <a href="{% url 'glaucoma:3d' %}" class="block text-lg font-medium hover:text-blue-400">3D</a>
+
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'glaucoma:logout' %}">
+                {% csrf_token %}
+                <button type="submit"
+                    class="px-6 py-2 bg-red-500 hover:bg-red-600 rounded-full shadow-lg text-white font-semibold transition-all duration-300">
+                    Logout
+                </button>
+            </form>
+            {% else %}
+            <button onclick="openModal()"
+                class="px-6 py-2 bg-blue-500 hover:bg-blue-600 rounded-full shadow-lg text-white font-semibold transition-all duration-300">
+                Login
+            </button>
+            {% endif %}
+
+        </nav>
+    </header>
+
+    <!-- ✅ JavaScript for Mobile Menu -->
+    <script>
+        document.getElementById("mobileMenuBtn").addEventListener("click", function () {
+            let menu = document.getElementById("mobileMenu");
+            menu.classList.toggle("hidden");
+        });
+    </script>
+
+
+    <!-- ✅ Login Modal -->
+    <div id="loginModal" class="fixed inset-0 hidden flex items-center justify-center modal-bg">
+        <div class="relative w-full max-w-md p-6 glass fade-out">
+            <h2 class="text-2xl font-bold text-center text-white">Login</h2>
+            <form method="POST" action="{% url 'glaucoma:login' %}" class="mt-4">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="block text-white text-sm mb-1">Username</label>
+                    <input type="text" name="username" placeholder="Enter username"
+                        class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 text-white placeholder-white focus:ring focus:ring-blue-400 border border-white border-opacity-20">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-white text-sm mb-1">Password</label>
+                    <input type="password" name="password" placeholder="Enter password"
+                        class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 text-white placeholder-white focus:ring focus:ring-blue-400 border border-white border-opacity-20">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg mt-3">Login</button>
+            </form>
+
+            <!-- ✅ Signup Link -->
+            <p class="text-white text-sm text-center mt-3">
+                Don't have an account?
+                <a href="#" class="text-blue-400 underline" onclick="closeModal(); openSignupModal();">Signup</a>
+            </p>
+
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-white text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <!-- ✅ Signup Modal -->
+    <div id="signupModal" class="fixed inset-0 hidden flex items-center justify-center modal-bg">
+        <div class="relative w-full max-w-md p-6 glass fade-out">
+            <h2 class="text-2xl font-bold text-center text-white">Signup</h2>
+            <form method="POST" action="{% url 'glaucoma:signup' %}" class="mt-4">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <div class="mb-3 flex space-x-4">
+                        <div class="w-1/2">
+                            <label class="block text-white text-sm mb-1">First Name</label>
+                            <input type="text" name="first_name" placeholder="Enter first name"
+                                class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white placeholder-white focus:ring focus:ring-blue-400">
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-white text-sm mb-1">Last Name</label>
+                            <input type="text" name="last_name" placeholder="Enter last name"
+                                class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white placeholder-white focus:ring focus:ring-blue-400">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-white text-sm mb-1">Email</label>
+                        <input type="email" name="email" placeholder="Enter email"
+                            class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white placeholder-white focus:ring focus:ring-blue-400">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-white text-sm mb-1">Password</label>
+                        <input type="password" name="password" placeholder="Enter password"
+                            class="w-full px-3 py-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white placeholder-white focus:ring focus:ring-blue-400">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg mt-3">Signup</button>
+            </form>
+
+            <!-- ✅ Login Link -->
+            <p class="text-white text-sm text-center mt-3">
+                Already have an account?
+                <a href="#" class="text-blue-400 underline" onclick="closeSignupModal(); openModal();">Login</a>
+            </p>
+
+            <button onclick="closeSignupModal()" class="absolute top-3 right-3 text-white text-2xl">&times;</button>
+        </div>
+    </div>
+
+
+
+
+    <!-- ✅ JavaScript -->
+    <script>
+        function openModal() {
+            let modal = document.getElementById("loginModal");
+            modal.classList.remove("hidden");
+            modal.children[0].classList.remove("fade-out");
+            modal.children[0].classList.add("fade-in");
+        }
+
+        function closeModal() {
+            let modal = document.getElementById("loginModal");
+            modal.children[0].classList.remove("fade-in");
+            modal.children[0].classList.add("fade-out");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+        }
+
+        function openSignupModal() {
+            let modal = document.getElementById("signupModal");
+            modal.classList.remove("hidden");
+            modal.children[0].classList.remove("fade-out");
+            modal.children[0].classList.add("fade-in");
+        }
+
+        function closeSignupModal() {
+            let modal = document.getElementById("signupModal");
+            modal.children[0].classList.remove("fade-in");
+            modal.children[0].classList.add("fade-out");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+        }
+    </script>
+
+
+</body>
+
+</html>

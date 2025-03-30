@@ -1,0 +1,98 @@
+{% load static %}
+<!-- {% include 'glaucoma/login.html' %} -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EyeCare PRO</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+
+    <!-- Importing Three.js for the 3D model -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #ffffff;
+        }
+
+        .navbar {
+            color: aliceblue;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+        .navbar .navbar-start,
+        .navbar .navbar-center,
+        .navbar .navbar-end {
+            padding: 0.5rem 1rem;
+        }
+
+        #3d-model-container {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .content {
+            margin-top: 0;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Section -->
+    <header class="navbar shadow-2xl">
+        <div class="navbar-start">
+            <a class="btn btn-ghost normal-case text-xl font-bold">EyeCare PRO</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{% url 'glaucoma:index' %}">Home</a></li>
+                <li><a href="{% url 'glaucoma:about' %}">About</a></li>
+                <li><a href="{% url 'glaucoma:contact' %}">Contact</a></li>
+                <li><a href="{% url 'glaucoma:signup' %}" class="text-primary">Signup</a></li>
+                <li><a href="{% url 'glaucoma:3d' %}">3D</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <button class="btn btn-primary" >Login</button>
+
+        </div>
+    </header>
+
+    <!-- 3D Model Section -->
+    <div class="content">
+        <div id="3d-model-container">
+            <script type="module" src="{% static 'glaucoma/js/main.js' %}"></script>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

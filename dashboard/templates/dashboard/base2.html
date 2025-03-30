@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EyeCare PRO{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <!-- ✅ Navbar -->
+    <header
+        class="fixed top-0 left-0 w-full bg-opacity-20 backdrop-blur-lg shadow-lg p-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'glaucoma:index' %}" class="text-2xl font-extrabold tracking-wide text-blue-400">EyeCare PRO</a>
+
+        <!-- Navbar Links -->
+        <nav class="hidden lg:flex space-x-6">
+            <a href="{% url 'glaucoma:index' %}" class="hover:text-blue-400">Home</a>
+            <a href="{% url 'glaucoma:about' %}" class="hover:text-blue-400">About</a>
+            <a href="{% url 'glaucoma:contact' %}" class="hover:text-blue-400">Contact</a>
+            <a href="{% url 'glaucoma:3d' %}" class="hover:text-blue-400">3D</a>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="relative">
+            <button id="profileButton" class="focus:outline-none">
+                <img src="{% static 'images/profile-icon.png' %}" alt="Profile" class="w-10 h-10 rounded-full">
+            </button>
+            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-2">
+                <a href="{% url 'dashboard:profile' %}" class="block px-4 py-2 hover:bg-gray-700">Profile</a>
+                <a href="{% url 'dashboard:change_password' %}" class="block px-4 py-2 hover:bg-gray-700">Change
+                    Password</a>
+                    <a href="#" onclick="document.getElementById('logout-form').submit(); return false;" class="block px-4 py-2 hover:bg-gray-700">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ✅ JavaScript for Profile Dropdown -->
+    <script>
+        document.getElementById("profileButton").addEventListener("click", function () {
+            document.getElementById("profileDropdown").classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- ✅ Page Content -->
+    <main class="pt-16">{% block content %}{% endblock %}</main>
+
+    <form id="logout-form" method="POST" action="{% url 'dashboard:logout' %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+    <!-- <a href="#" onclick="document.getElementById('logout-form').submit(); return false;"
+        class="dropdown-item">Logout</a> -->
+
+</body>
+
+</html>

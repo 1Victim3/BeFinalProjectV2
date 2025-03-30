@@ -1,0 +1,24 @@
+{% extends 'dashboard/base2.html' %}
+{% block title %}New Test - EyeCare PRO{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Vision Guardian Card -->
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg h-84 w-90">
+            <h2 class="text-xl font-semibold text-blue-400">Vision Guardian</h2>
+            <p class="text-gray-300 mt-2">Advanced Glaucoma Detection System</p>
+            <p class="text-gray-400 mt-1 text-sm">AI-powered analysis for early glaucoma detection</p>
+            <button class="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Start Detection</button>
+        </div>
+
+        <!-- Stage Insight Card -->
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg h-84 w-90">
+            <h2 class="text-xl font-semibold text-blue-400">Stage Insight</h2>
+            <p class="text-gray-300 mt-2">Comprehensive Stage Analysis System</p>
+            <p class="text-gray-400 mt-1 text-sm">Detailed progression analysis and staging</p>
+            <button class="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Start Analysis</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

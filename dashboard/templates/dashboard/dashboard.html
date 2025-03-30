@@ -1,0 +1,47 @@
+{% extends 'dashboard/base2.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold">Welcome, Dr. {{ request.user.first_name }}</h1>
+
+    
+    <!-- Dashboard Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Patient Records -->
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700">Patient Records</h2>
+            <p class="text-gray-500">Manage and view patient history.</p>
+            <a href="#" class="text-blue-500 font-semibold">View Records →</a>
+        </div>
+        
+        <!-- New Tests -->
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700">New Tests</h2>
+            <p class="text-gray-500">Upload and review fundus images.</p>
+            <a href="{% url 'dashboard:new_tests' %}" class="text-blue-500 font-semibold">Upload Test →</a>
+        </div>
+        
+        <!-- Tokens -->
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700">Tokens</h2>
+            <p class="text-gray-500">Manage appointments and queue system.</p>
+            <a href="#" class="text-blue-500 font-semibold">Check Tokens →</a>
+        </div>
+        
+        <!-- Recent Diagnoses -->
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700">Recent Diagnoses</h2>
+            <p class="text-gray-500">View latest patient diagnoses.</p>
+            <a href="#" class="text-blue-500 font-semibold">View Diagnoses →</a>
+        </div>
+        
+        <!-- Messages & Notifications -->
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-700">Messages & Notifications</h2>
+            <p class="text-gray-500">Check messages from patients and system alerts.</p>
+            <a href="#" class="text-blue-500 font-semibold">Go to Inbox →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
